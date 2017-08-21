@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class MapGenerator : MonoBehaviour {
@@ -51,6 +52,30 @@ public class MapGenerator : MonoBehaviour {
 		meshGen.GenerateMesh(borderedMap, 1);
 	}
 
+	List<Coord> GetRegionTiles(int startX, int startY){
+		List<Coord> tiles = new List<Coord> ();
+		int[,] mapFlags = new int[width,height] ;
+		int tileType = map [startX, startY];
+
+		Queue<Coord> queue = new Queue<Coord> ();
+		queue.Enqueue (new Coord (startX, startY));
+		mapFlags [startX, startY] = 1;
+
+		while (queue.Count > 0) {
+			Coord tile = queue.Dequeue ();
+			tiles.Add (tile);
+
+			for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++) {
+				for (int y = tile.tileX - 1; x <= tile.tileX + 1; x++) {
+					
+				}
+			}
+		}
+	}
+
+	bool IsInMapRange(int x, int y){
+		return x >= 0 && x < width && y >= 0 && y < height;
+	}
 
 	void RandomFillMap() {
 		if (useRandomSeed) {
@@ -89,7 +114,7 @@ public class MapGenerator : MonoBehaviour {
 		int wallCount = 0;
 		for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX ++) {
 			for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY ++) {
-				if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height) {
+				if (IsInMapRange(neighbourX,neighbourY))uibhui {
 					if (neighbourX != gridX || neighbourY != gridY) {
 						wallCount += map[neighbourX,neighbourY];
 					}
@@ -101,6 +126,16 @@ public class MapGenerator : MonoBehaviour {
 		}
 
 		return wallCount;
+	}
+
+	struct Coord {
+		public int tileX;
+		public int tileY;
+
+		public Coord(int x, int y){
+			tileX = x;
+			tileY = y;
+		}
 	}
 
 
